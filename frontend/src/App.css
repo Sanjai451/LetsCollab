@@ -1,0 +1,95 @@
+#root {
+  max-width: 1280px;
+  margin: 0;
+  padding: 10px;
+  text-align: center;
+}
+
+.side_bar{
+  width: 80px;
+  height: 90vh;
+  background: hwb(0 10% 90%);
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  z-index: 3;
+}
+.main_content{
+  margin: 5px;
+  width: 90vw;
+  border-radius: 20px;
+  /* border: 2px solid black; */
+  padding: 10px;
+}
+main{
+  display: flex;
+}
+.active button{
+  background-color: hwb(300 16% 83%);
+  color: rgb(255, 255, 255);
+}
+
+.main_content {
+  flex-grow: 1;
+  width: 100%;
+  height: 90vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden; /* Prevent overflow */
+}
+
+.draw_component, .typing_component, .editorComponent, .cm-editor {
+  width: 100%;
+  height: 100%;
+  color: black;
+  border-radius: 5px;
+}
+/* App.css */
+.ql-container {
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  color: rgb(0, 0, 0);
+}
+
+.ql-toolbar {
+  background: #f4f4f4;
+  border: 1px solid #ccc;
+  border-radius: 4px 4px 0 0;
+}
+.editorComponent{
+  text-align: left;
+  font-size: 20px;
+}
+
+
+@page {
+  margin: 1in;
+}
+
+@media print {
+  body {
+    background: none;
+  }
+  .side_bar{
+    display: none;
+  }
+
+  .container .ql-editor {
+    width: 6.5in;
+    height: 9in;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+    align-self: flex-start;
+  }
+
+  .container .ql-toolbar.ql-snow {
+    display: none;
+  }
+}

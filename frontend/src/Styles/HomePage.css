@@ -1,0 +1,29 @@
+._input{
+    width: 250px;
+    height: 15px;
+    padding: 10px;
+    margin: 10px;
+    outline: none;
+}
+._customButton{
+    margin: 15px;
+    border: 1px solid white;
+    transition: .2s;
+}
+._customButton:hover{
+    scale: 1.01;
+}
+._custom_image{
+    width: 450px;
+}
+._main_home{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+._main_home{
+    height: 80vh;
+    width: 70vw;
+}
