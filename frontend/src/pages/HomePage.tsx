@@ -14,7 +14,6 @@ const HomePage = () => {
     setRoomId(randomId);
   };
 
-  // Handle joining a room
   const handleJoinRoom = () => {
     if (roomId.trim()) {
       navigate(`/code`);
