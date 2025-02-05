@@ -16,7 +16,8 @@ const HomePage = () => {
 
   const handleJoinRoom = () => {
     if (roomId.trim()) {
-      navigate(`/code`);
+      localStorage.setItem('roomID', roomId.trim());
+      navigate(`/draw`);
     } else {
       alert("Please enter or generate a room ID.");
     }
@@ -40,7 +41,7 @@ const HomePage = () => {
             showBorder={false}
             className="custom-class"
             >
-            <h1>Lets Collab</h1>
+            <h1>Let's Collab</h1>
         </GradientText>
             <p className="text-lg text-gray-600 mt-2">
             <h3>Code, Draw, and Type together in real-time.</h3>

@@ -1,0 +1,57 @@
+.code_helper{
+    width: 15vw;
+    height: 90vh;
+    border: 2px solid rgb(175, 175, 175);
+    border-radius: 20px;
+    margin-top: 20px;
+    padding: 20px;
+    background-color: rgb(51, 51, 51);
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    transition: .5s;
+}
+.code_helper button{
+    background: #22c057;
+}
+.code_helper div textarea{
+    min-width: 200px;
+    min-height: 200px;
+    margin-bottom: 10px;
+}
+.code_helper div button{
+    display: flex;
+    align-items: center;
+    height: 40px;
+    padding: 8px;
+    background-color: rgb(138, 133, 133);
+}
+.code_helper div button img{
+    height: 20px;
+    margin-right: 5px;
+    color: black;
+}
+.helper_more{
+    position: absolute;
+    bottom: 40px;
+    right: 30px;
+   height: 45px;
+   width: 45px;
+   background: #4ed142;
+   font-size: 20px;
+   color: black;
+   cursor: pointer;
+   border-radius: 25px;
+}
+.helper_more img{
+    padding: 3px;
+    height: 80%;
+}
+.select_code{
+    padding: 10px;
+    margin: 10px;
+    margin-top: 20px;
+    border-radius: 10px;
+    background-color: #575757;
+}

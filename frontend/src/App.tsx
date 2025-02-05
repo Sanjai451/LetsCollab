@@ -19,6 +19,9 @@ function App() {
                 <Route path="/type" element={<TypingPage />} />
               </Routes>
             </div>
+            {/* <div >
+                  <button>Share room ID</button>
+            </div> */}
           </main>
       </Router>
     </>

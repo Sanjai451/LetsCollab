@@ -18,10 +18,17 @@ const TOOLBAR_OPTIONS = [
 ];
 
 export default function TextEditor() {
-  const { id: documentId } = useParams<{ id: string }>();
+  const [documentId, setDocumentId] = useState<string | null>(null);
   const [socket, setSocket] = useState<Socket | null>(null);
   const [quill, setQuill] = useState<Quill | null>(null);
   const wrapperRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(()=>{
+      const id = localStorage.getItem("roomID");
+      if (id) {
+        setDocumentId(id);
+      }
+  },[])
 
   useEffect(() => {
     const s: Socket = io("http://localhost:3001");
@@ -32,18 +39,20 @@ export default function TextEditor() {
     };
   }, []);
 
-  useEffect(() => {
+  useEffect(() => { // to get document from existing 
     if (!socket || !quill) return;
 
-    socket.once("load-document", (document: any) => {
+    socket.on("load-document", (document: any) => {
+      // console.log("Getting Document From Document ID : " , documentId)
+      // console.log(document.data.ops[0].insert)
       quill.setContents(document);
-      quill.enable(); // ✅ Enable editing after loading document
+      quill.enable(); 
     });
 
     socket.emit("get-document", documentId);
   }, [socket, quill, documentId]);
 
-  useEffect(() => {
+  useEffect(() => { //to save the document periodically
     if (!socket || !quill) return;
 
     const interval = setInterval(() => {
@@ -55,10 +64,11 @@ export default function TextEditor() {
     };
   }, [socket, quill]);
 
-  useEffect(() => {
+  useEffect(() => { //to update on changes from others
     if (!socket || !quill) return;
 
     const handler = (delta: any) => {
+      // console.log(delta)
       quill.updateContents(delta);
     };
     socket.on("receive-changes", handler);
@@ -68,10 +78,12 @@ export default function TextEditor() {
     };
   }, [socket, quill]);
 
-  useEffect(() => {
+  useEffect(() => {  // To handle Changes produced
     if (!socket || !quill) return;
 
     const handler = (delta: any, _oldDelta: any, source: string) => {
+      // console.log(delta.ops[1])
+      // console.log(delta)
       if (source !== "user") return;
       socket.emit("send-changes", delta);
     };
@@ -95,6 +107,7 @@ export default function TextEditor() {
     });
 
     q.enable(); // ✅ Ensure the editor is enabled for typing
+    q.setText("hell")
     setQuill(q);
   }, []);
 
