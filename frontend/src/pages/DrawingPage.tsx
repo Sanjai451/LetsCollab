@@ -2,14 +2,10 @@ import { Tldraw } from '@tldraw/tldraw';
 import 'tldraw/tldraw.css'
 import { useSyncDemo } from '@tldraw/sync'
 import { useEffect, useState } from 'react';
-// import io from 'socket.io-client';
-
-// const socket = io('http://localhost:5000'); // Backend URL
 
 const DrawingPage = () => {
     const [roomID, setRoomID] = useState<string | null>('')
-    
-    
+     
     useEffect(()=>{
       const id = localStorage.getItem('roomID')
       setRoomID(id);

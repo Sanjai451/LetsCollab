@@ -1,18 +1,29 @@
-import React from 'react'
+import React, { useState } from 'react'
+import availableLanguage from '../resources/Languages';
+import '../Styles/CodeEditor.css'
+import CodeHelperProps from '../resources/CodeHelperProps';
+import Options from './Options';
+import toast, { Toaster } from 'react-hot-toast';
 
-interface CodeHelperProps {
-    displayCodeHelper: boolean;
-    handleRunCode: () => void; // Assuming this is a function
-    outputFromAPI: string | ''; // Assuming output is a string or null
-    SetLanguage: (language: string) => void; // Function to set the language
-    language: string | ''; // Function to set the language
-}
 
 const CodeHelper: React.FC<CodeHelperProps> = ({displayCodeHelper, handleRunCode, outputFromAPI, SetLanguage, language }) => {
+
+    const [copied, setCopied] = useState(false)
+
+    function handleCopyClipBoardResults(): void {
+        //alert with toast
+        console.log("copied")
+        toast('Copied to Clipboard 📋')
+        navigator.clipboard.writeText(outputFromAPI)
+        setCopied(true)
+    }
+
   return (
     <>
     {displayCodeHelper && 
+            
             <div className={`code_helper`}  >
+                <div><Toaster/></div>
                 <button onClick={handleRunCode}>Run</button>
                 <div>
                     <h4>Output</h4>
@@ -20,13 +31,25 @@ const CodeHelper: React.FC<CodeHelperProps> = ({displayCodeHelper, handleRunCode
 
                     </textarea>
                     <div>
-                        <button><img src="https://img.icons8.com/?size=100&id=30&format=png&color=000000" alt="" />copy</button>
+                        <button 
+                            onClick={handleCopyClipBoardResults}
+                        >
+                            <img src="https://img.icons8.com/?size=100&id=30&format=png&color=000000" alt="copy" />
+                            {copied ? 'copied' : 'copy'}
+                        </button>
                     </div>
                 </div>
                 <select name="" id="" value={language} className='select_code' onChange={(e)=>SetLanguage(e.target.value)}>
-                        <option value="javascript">javascript</option>
-                        <option value="python">python</option>
-                        <option value="java">java</option>
+                {
+                    availableLanguage ? (
+                        availableLanguage.map((lang, index) => (
+                            <Options lang={lang} index={index}/>
+                        ))
+                    ) : (
+                        <>No Languages Found</>
+                    )
+                }
+
                 </select>
             </div>
         }

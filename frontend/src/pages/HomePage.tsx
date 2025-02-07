@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import '../Styles/HomePage.css'
 import '../Styles/ButtonStyle.css'
 import GradientText from "../Component/GradientText";
+import toast, { Toaster } from "react-hot-toast";
 
 const HomePage = () => {
   const [roomId, setRoomId] = useState("");
@@ -19,7 +20,7 @@ const HomePage = () => {
       localStorage.setItem('roomID', roomId.trim());
       navigate(`/draw`);
     } else {
-      alert("Please enter or generate a room ID.");
+      toast("Please enter or generate a room ID. ⚠️");
     }
   };
 
@@ -33,13 +34,14 @@ const HomePage = () => {
           className="_custom_image"
         />
      </div>
+     <Toaster/>
      <div>
         <div className="w-1/2 flex flex-col items-center justify-center bg-gray-100 p-8">
         <GradientText
             colors={["#40ffaa", "#4079ff", "#40ffaa", "#4079ff", "#40ffaa"]}
             animationSpeed={3}
             showBorder={false}
-            className="custom-class"
+            className="custom_class"
             >
             <h1>Let's Collab</h1>
         </GradientText>
@@ -66,21 +68,15 @@ const HomePage = () => {
             >
               Generate
             </button>
-          {/* <button
-            className="_customButton"
-            onClick={handleJoinRoom}
-          >
-            Join Room
-          </button> */}
 
         <div className="container_button_style">
-        <button className="button type--C " onClick={handleJoinRoom}>
-            <div className="button__line"></div>
-            <div className="button__line"></div>
-            <span className="button__text">JOIN</span>
-            <div className="button__drow1"></div>
-            <div className="button__drow2"></div>
-        </button>
+          <button className="button type--C " onClick={handleJoinRoom}>
+              <div className="button__line"></div>
+              <div className="button__line"></div>
+              <span className="button__text">JOIN</span>
+              <div className="button__drow1"></div>
+              <div className="button__drow2"></div>
+          </button>
         </div>
 
         </div>

@@ -1,5 +1,4 @@
-import { useRef, useState } from 'react';
-import axios, { AxiosInstance } from 'axios'
+import { useEffect, useState } from 'react';
 import '../Styles/CodeEditor.css'
 import CodeMirror, {
     Extension,
@@ -7,38 +6,54 @@ import CodeMirror, {
 } from "@uiw/react-codemirror"
 import { editorThemes } from '../resources/Themes';
 import CodeHelper from '../Component/CodeHelper';
+import { io, Socket } from 'socket.io-client';
+import { axiosInstance } from '../resources/axiosInstance';
+import toast, { Toaster } from 'react-hot-toast';
 
 
-const pistonBaseUrl = "https://emkc.org/api/v2/piston"
-
-const axiosInstance: AxiosInstance = axios.create({
-    baseURL: pistonBaseUrl,
-    headers: {
-        "Content-Type": "application/json",
-    },
-})
-
+const SERVER_URL = "http://localhost:3001";
 
 const CodeEditorPage = () => {
     const [extensions, setExtensions] = useState<Extension[]>([])
     const theme =  "Basic Dark";
     const [displayCodeHelper, setDisplayCodeHelper] = useState<boolean>(false)
-    const [codes, setCodes] = useState<string>('')
+    const [codes, setCode] = useState<string>("----")
     const [outputFromAPI, setOutputFromAPI] = useState<string>('')
     const [language, SetLanguage] = useState<string>('javascript')
-    const onCodeChange = (code: string, view: ViewUpdate) => {
-        
-        console.log("code" , code )
-        setCodes(code)
-        console.log(view)
+    const [roomId, setRoomID] = useState<string | null>('');
+    const [socket, setSocket] = useState<Socket | null>(null);
+
+     // Handle code change and emit to others
+     const onCodeChange = (newCode: string, view: ViewUpdate) => {
+        setCode(newCode);
+        console.log("📤 Emitting 'send-code' event:", { roomId, code: newCode });
+        sessionStorage.setItem("code", newCode)
+        if (socket) {
+            socket.emit("send-code", { roomId, code: newCode });
+        } else {
+            console.warn("⚠️ Socket not initialized yet!");
+        }
+    };
+
+    const hanldeFromSessions = () =>{
+        const c = sessionStorage.getItem("code") 
+        if(c){
+            setCode(c)
+        }
+        else{
+            setCode("console.log('HELLO WORLD 🧑‍💻)")
+        }
     }
-    
+
+    //function to display helper
     function handleOptions(): void {
         setDisplayCodeHelper(!displayCodeHelper)
     }
 
+    //handle run code 🏃‍➡️🏃‍➡️🏃‍➡️
     const handleRunCode = async ():Promise<void> =>  {
         // console.log(codes)
+        toast('Code Running ▶️')
         try {
             const response = await axiosInstance.post('/execute', {
                 "language": language,
@@ -54,17 +69,73 @@ const CodeEditorPage = () => {
       
             console.log(response.data.run.stdout || response.data.run.stderr);
             setOutputFromAPI(response.data.run.stdout || response.data.run.stderr)
+
+            if(response.data.run.stdout) toast("Code Executed Successfully ✅✅✅")
+            else toast("Error executing code. ❌❌❌")
           } catch (error) {
+            toast("Error executing code. ❌❌❌")
             console.log("Error executing code.");
           } 
     }
 
+    // Fetch room ID from local storage
+    useEffect(() => {
+      const roomId = localStorage.getItem("roomID") || '12345';
+      setRoomID(roomId);
+      console.log("📌 Room ID:", roomId);
+
+      // Establish Socket connection
+      const s: Socket = io(SERVER_URL);
+      setSocket(s);
+
+      s.on("joined",(socketID)=>{
+        toast("new user joined 🤝")
+      })
+
+      s.on("userleft",(string)=>{
+        toast("A User Left Room ↩️")
+      })
+
+      // Join the room
+      s.on("connect", () => {
+          console.log("✅ Socket Connected:", s.id);
+      });
+
+      // Listen for code updates
+      s.on("load-code", (savedCode: string) => {
+          console.log("📥 Received 'load-code':", savedCode);
+          setCode(savedCode);
+      });
+
+      s.on("receive-code", (newCode: string) => {
+          console.log("📥 Received 'receive-code':", newCode);
+          sessionStorage.setItem("code", newCode)
+          setCode(newCode);
+      });
+
+      s.emit("join-room", roomId);
+      console.log("📤 Emitting 'join-room' event:", roomId);
+
+      
+      return () => {
+          console.log("🛑 Disconnecting Socket...");
+          s.disconnect();
+      };
+
+  }, []); // Runs only once on mount
+
+    useEffect(()=>{
+        hanldeFromSessions()
+    },[])
+
     return (
         <>
+            <div><Toaster/></div>
             <CodeMirror
                 theme={editorThemes[theme]}
                 onChange={onCodeChange}
                 extensions={extensions}
+                value={codes}
                 minHeight="100%"
                 maxWidth="100vw"
                 className='editorComponent'

@@ -93,3 +93,8 @@ main{
     display: none;
   }
 }
+
+._sideBarIcon{
+  width: 32px;
+  color: wheat;
+}
