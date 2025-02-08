@@ -20,6 +20,7 @@
     "codemirror": "^6.0.1",
     "dotenv": "^16.4.7",
     "env": "^0.0.2",
+    "framer-motion": "^12.4.1",
     "quill": "^2.0.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

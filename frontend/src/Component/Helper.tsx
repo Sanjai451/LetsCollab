@@ -40,10 +40,6 @@ const Helper : React.FC<PropsForHelper> = ({setHelper}) => {
                             </button>
                         </td>
                     </tr>
-                    <tr>
-                        <td><h2>Name</h2> </td>
-                        <td><h3>{'Sanjai Kumar'}</h3></td>
-                    </tr>
                 </table>
             </div>
        </div>

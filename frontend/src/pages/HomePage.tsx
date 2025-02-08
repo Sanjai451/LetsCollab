@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import '../Styles/HomePage.css'
 import '../Styles/ButtonStyle.css'
 import GradientText from "../Component/GradientText";
 import toast, { Toaster } from "react-hot-toast";
+
+
 
 const HomePage = () => {
   const [roomId, setRoomId] = useState("");
@@ -39,7 +41,7 @@ const HomePage = () => {
         <div className="w-1/2 flex flex-col items-center justify-center bg-gray-100 p-8">
         <GradientText
             colors={["#40ffaa", "#4079ff", "#40ffaa", "#4079ff", "#40ffaa"]}
-            animationSpeed={3}
+            animationSpeed={2}
             showBorder={false}
             className="custom_class"
             >

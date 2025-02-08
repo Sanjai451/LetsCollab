@@ -1,8 +1,7 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Quill from "quill";
 import "quill/dist/quill.snow.css";
 import { io, Socket } from "socket.io-client";
-import { useParams } from "react-router-dom";
 
 const SAVE_INTERVAL_MS = 2000;
 const TOOLBAR_OPTIONS = [
@@ -21,7 +20,6 @@ export default function TextEditor() {
   const [documentId, setDocumentId] = useState<string | '12345'>('');
   const [socket, setSocket] = useState<Socket | null>(null);
   const [quill, setQuill] = useState<Quill | null>(null);
-  const wrapperRef = useRef<HTMLDivElement | null>(null);
 
   // useEffect(()=>{
   //     const id = localStorage.getItem("roomID");

@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import '../Styles/CodeEditor.css'
 import CodeMirror, {
     Extension,
-    ViewUpdate,
 } from "@uiw/react-codemirror"
 import { editorThemes } from '../resources/Themes';
 import CodeHelper from '../Component/CodeHelper';
@@ -14,7 +13,7 @@ import toast, { Toaster } from 'react-hot-toast';
 const SERVER_URL = "http://localhost:3001";
 
 const CodeEditorPage = () => {
-    const [extensions, setExtensions] = useState<Extension[]>([])
+    const [extensions] = useState<Extension[]>([])
     const theme =  "Basic Dark";
     const [displayCodeHelper, setDisplayCodeHelper] = useState<boolean>(false)
     const [codes, setCode] = useState<string>("----")
@@ -24,7 +23,7 @@ const CodeEditorPage = () => {
     const [socket, setSocket] = useState<Socket | null>(null);
 
      // Handle code change and emit to others
-     const onCodeChange = (newCode: string, view: ViewUpdate) => {
+     const onCodeChange = (newCode: string) => {
         setCode(newCode);
         console.log("📤 Emitting 'send-code' event:", { roomId, code: newCode });
         sessionStorage.setItem("code", newCode)
@@ -88,11 +87,11 @@ const CodeEditorPage = () => {
       const s: Socket = io(SERVER_URL);
       setSocket(s);
 
-      s.on("joined",(socketID)=>{
+      s.on("joined",()=>{
         toast("new user joined 🤝")
       })
 
-      s.on("userleft",(string)=>{
+      s.on("userleft",()=>{
         toast("A User Left Room ↩️")
       })
 

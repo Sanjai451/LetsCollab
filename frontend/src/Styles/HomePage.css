@@ -13,9 +13,20 @@
 ._customButton:hover{
     scale: 1.01;
 }
-._custom_image{
+._custom_image {
     width: 450px;
-}
+    animation: floatAnimation 3s ease-in-out infinite alternate;
+  }
+  
+  @keyframes floatAnimation {
+    0% {
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(-25px);
+    }
+  }
+  
 ._main_home{
     display: flex;
     gap: 20px;
