@@ -11,6 +11,9 @@
 The application ensures data persistence by using **SessionStorage** for storing in-session code and **MongoDB** for long-term storage.
 
 ---
+<img width="1418" height="509" alt="LCDIAG" src="https://github.com/user-attachments/assets/c19c3b2e-64e9-4994-938f-3a8fd51f2cfd" />
+
+---
 
 ## Features
 
